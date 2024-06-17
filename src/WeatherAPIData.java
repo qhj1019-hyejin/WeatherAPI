@@ -2,6 +2,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -68,7 +69,7 @@ public class WeatherAPIData {
         return null;
     }
 
-    private static void displayWeatherData (double latitude, double longitude){
+    private static void displayWeatherData (double latitude, double longitude){ // 날씨 데이터 표시
         try{
             String url = "https://api.open-meteo.com/v1/forecast?latitude=" + latitude +
                     "&longitude=" + longitude + "&current=temperature_2m,relative_humidity_2m,wind_speed_10m";
@@ -86,7 +87,7 @@ public class WeatherAPIData {
             JSONObject jsonObject = (JSONObject) parser.parse(jsonResponse); // json key, value로 변환한다.
             JSONObject currentWeatherJson =  (JSONObject) jsonObject.get("current");
 
-            //System.out.println(currentWeatherJson.toJSONString());
+            System.out.println(currentWeatherJson.toJSONString());
 
             String time = (String) currentWeatherJson.get("time"); // time을 문자열로 변환
             System.out.println("현재 시간 : " + time);
@@ -94,9 +95,11 @@ public class WeatherAPIData {
             double temperature = (double) currentWeatherJson.get("temperature_2m"); // 온도를 실수로 변환
             System.out.println("현재 온도 : " + temperature);
 
-            //long relativeHumidity = ; test
+            long relativeHumidity = (long) currentWeatherJson.get("relative_humidity_2m");
+            System.out.println("현재 습도 : " + relativeHumidity);
 
-
+            double windSpeed = (double) currentWeatherJson.get("wind_speed_10m");
+            System.out.println("현재 풍속 : " + windSpeed);
 
         }catch(Exception e){
             e.printStackTrace();
